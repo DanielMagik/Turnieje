@@ -5,9 +5,15 @@
  */
 package pl.polsl.aei.io.turnieje.model.repository;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.HashSet;
 import java.util.Set;
 import pl.polsl.aei.io.turnieje.model.datamodel.Match;
 import pl.polsl.aei.io.turnieje.model.datamodel.MatchId;
+import pl.polsl.aei.io.turnieje.model.datamodel.Team;
+import pl.polsl.aei.io.turnieje.model.datamodel.TeamId;
 import pl.polsl.aei.io.turnieje.model.datamodel.Tournament;
 import pl.polsl.aei.io.turnieje.model.datamodel.TournamentId;
 
@@ -15,39 +21,166 @@ import pl.polsl.aei.io.turnieje.model.datamodel.TournamentId;
  * Realization of repository interface for matches.
  * 
  * @author Piotr Uhl
- * @version 0.1.0
  */
 public class MatchRepository implements IMatchRepository {
-    @Override
-    public boolean addMatch(Match match) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+    
+    private final DBInterface dbInterface;
+    
+    MatchRepository(DBInterface dbInterface) {
+	this.dbInterface = dbInterface;
     }
+    
     @Override
-    public boolean delete(MatchId match) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+    public MatchId addMatch(Match match) {
+	try {
+	    PreparedStatement statement = dbInterface.createPreparedStatement("INSERT INTO Matches(tourId, matchDate, finished, winner, team1Id, team2Id) VALUES (?, ?, ?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+	    statement.setInt(1, match.getTourId().id);
+	    statement.setDate(2, new java.sql.Date(match.getDate().getTime()));
+    	    statement.setBoolean(3, match.getFinished());
+            if (match.getWinner() != null)
+		statement.setInt(4, match.getWinner().id);
+	    statement.setInt(5, match.getTeamId(1).id);
+	    statement.setInt(6, match.getTeamId(1).id);
+	    statement.execute();
+	    
+	    ResultSet rs = statement.getGeneratedKeys();
+	    if (rs.next()) {
+	       return new MatchId(rs.getInt(1));
+	    } 
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
+	return null;
     }
     @Override
     public boolean delete(Match match) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	return delete(match.id);
+    }
+    @Override
+    public boolean delete(MatchId match) {
+	try {
+	    Statement statement = dbInterface.createStatement();
+	    if (statement.executeUpdate(String.format("DELETE FROM Matches WHERE matchId=%d", match.id)) == 0)
+		return false;
+	    else
+		return true;
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
     }
     @Override
     public Set<Match> getAll() {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	try {
+	    Statement statement = dbInterface.createStatement();
+	    ResultSet rs = statement.executeQuery("SELECT * FROM Matches");
+	    Set<Match> set = new HashSet<>();
+	    while (rs.next()) {
+		Match match = new Match(rs.getInt("matchId"));
+		match.setTourId(new TournamentId(rs.getInt("tourId")));
+		match.setDate(rs.getDate("matchDate"));
+		match.setFinished(rs.getBoolean("finished"));
+		match.setWinner(new TeamId(rs.getInt("winner")));
+		match.setTeamId(1, new TeamId(rs.getInt("team1Id")));
+		match.setTeamId(2, new TeamId(rs.getInt("team2Id")));
+		set.add(match);
+	    }
+	    return set;
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
     }
     @Override
     public Match getById(MatchId id) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	try {
+	    Statement statement = dbInterface.createStatement();
+	    ResultSet rs = statement.executeQuery(String.format("SELECT * FROM Matches WHERE matchId=%d", id.id));
+	    if (rs.next()) {
+		Match match = new Match(rs.getInt("matchId"));
+		match.setTourId(new TournamentId(rs.getInt("tourId")));
+		match.setDate(rs.getDate("matchDate"));
+		match.setFinished(rs.getBoolean("finished"));
+		match.setWinner(new TeamId(rs.getInt("winner")));
+		match.setTeamId(1, new TeamId(rs.getInt("team1Id")));
+		match.setTeamId(2, new TeamId(rs.getInt("team2Id")));
+		return match;
+	    }
+	    else {
+		return null;
+	    }
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
+    }
+    @Override
+    public Set<Match> getByTeam(Team team) {
+	return getByTeam(team.id);
+    }
+    @Override
+    public Set<Match> getByTeam(TeamId team) {
+	try {
+	    Statement statement = dbInterface.createStatement();
+	    ResultSet rs = statement.executeQuery(String.format("SELECT * FROM Matches WHERE team1Id=%d OR team2Id=%d", team.id, team.id));
+	    Set<Match> set = new HashSet<>();
+	    while (rs.next()) {
+		Match match = new Match(rs.getInt("matchId"));
+		match.setTourId(new TournamentId(rs.getInt("tourId")));
+		match.setDate(rs.getDate("matchDate"));
+		match.setFinished(rs.getBoolean("finished"));
+		match.setWinner(new TeamId(rs.getInt("winner")));
+		match.setTeamId(1, new TeamId(rs.getInt("team1Id")));
+		match.setTeamId(2, new TeamId(rs.getInt("team2Id")));
+	    }
+	    return set;
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
     }
     @Override
     public Set<Match> getByTournament(TournamentId tournament) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	try {
+	    Statement statement = dbInterface.createStatement();
+	    ResultSet rs = statement.executeQuery(String.format("SELECT * FROM Matches WHERE tourId=%d", tournament.id));
+	    Set<Match> set = new HashSet<>();
+	    while (rs.next()) {
+		Match match = new Match(rs.getInt("matchId"));
+		match.setTourId(new TournamentId(rs.getInt("tourId")));
+		match.setDate(rs.getDate("matchDate"));
+		match.setFinished(rs.getBoolean("finished"));
+		match.setWinner(new TeamId(rs.getInt("winner")));
+		match.setTeamId(1, new TeamId(rs.getInt("team1Id")));
+		match.setTeamId(2, new TeamId(rs.getInt("team2Id")));
+	    }
+	    return set;
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
     }
     @Override
     public Set<Match> getByTournament(Tournament tournament) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	return getByTournament(tournament.id);
     }
     @Override
     public boolean update(Match match) {
-	throw new UnsupportedOperationException("Not implenented yet.");
+	try {
+	    PreparedStatement statement = dbInterface.createPreparedStatement("UPDATE Matches SET tourId=?, matchDate=?, finished=?, winner=?, team1Id=?, team2Id=? WHERE matchId=?");
+	    statement.setInt(7, match.id.id);
+	    statement.setInt(1, match.getTourId().id);
+	    statement.setDate(2, new java.sql.Date(match.getDate().getTime()));
+	    statement.setBoolean(3, match.getFinished());
+	    if (match.getWinner() != null)
+		statement.setInt(4, match.getWinner().id);
+	    statement.setInt(5, match.getTeamId(1).id);
+	    statement.setInt(6, match.getTeamId(2).id);
+	    return statement.executeUpdate() > 0;
+	}
+	catch (Exception exc) {
+	    throw new RuntimeException(exc);
+	}
     }
 }

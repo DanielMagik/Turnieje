@@ -1,3 +1,5 @@
+//Funkcja odpowiedzialna za przenoszenie pozycji z 
+//listy "do wyboru" do listy "wybrane"
 function addFunction(toAdd)
 {
     var iframe = document.getElementById("Avaible"+toAdd);   //dobieram sie do iframe
@@ -11,4 +13,5 @@ function addFunction(toAdd)
     select2.add(option);
 
     select.remove(select.selectedIndex);
+    myCountingFunction(toAdd);
 }

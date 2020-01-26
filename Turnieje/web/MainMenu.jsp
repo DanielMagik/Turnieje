@@ -4,6 +4,7 @@
     Author     : mariu
 --%>
 
+<%@page import="pl.polsl.aei.io.turnieje.model.datamodel.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,59 +14,58 @@
     </head>
     <body>
 <%
-    String user = null;
-    if(session.getAttribute("loginUser") == null)
+    String loggedUser = (String) session.getAttribute("loggedUser");
+    if(loggedUser == null)
     {
         response.sendRedirect("http://localhost:8080/Turnieje/Login.jsp");
         return;
     }
-    else 
-    {
-        user = (String) session.getAttribute("loginUser");
-    } 
-
 %>
     <center>
         
-        Zalogowany jako: <%= user %>
+        Zalogowany jako: <%= loggedUser.toString() %>
         
         <br/><br/>
         
-        <input type = "submit" value = "Stworz druzyne" onclick="submitTeam()">
+        <a href="/Turnieje/PrepareCreateTeamServlet">
+        <input type = "submit" value = "Stwórz drużynę" >
+        </a>
         
         <br/><br/>
-        
-        <input type = "submit" value = "Stworz turniej" onclick="submitTour()">
+         
+        <a href="/Turnieje/PrepareCreateTournamentServlet">
+        <input type = "submit" value = "Stwórz turniej">
+        </a>
         
         <br/><br/><br/><br/>
-        
-        Turnieje (testowo):
-        
-        <br/><br/>
-        
-        <iframe id="Tournaments" src="/Turnieje/Lists/TournamentsList.jsp"></iframe>
+         
+        <a href="/Turnieje/PrepareTournamentsList">
+        <input type = "submit" value = "Pokaż turnieje">
+        </a>
         
         <br/><br/>
+         
+        <a href="/Turnieje/PrepareTeamsList">
+        <input type = "submit" value = "Pokaż drużyny">
+        </a>
         
-        <input type = "submit" value = "Pokaz turniej" onclick="submitShowTour()">
+        <br/><br/>
+         
+        <a href="/Turnieje/PrepareTournamentsList?onlyMine=true">
+        <input type = "submit" value = "Pokaż moje turnieje">
+        </a>
+        
+        <br/><br/>
+         
+        <a href="/Turnieje/PrepareTeamsList?onlyMine=true">
+        <input type = "submit" value = "Pokaż moje drużyny">
+        </a>
+        <br/><br/>
+        
+        <a href="/Turnieje/EditMyData?onlyMine=true">
+        <input type = "submit" value = "Edytuj konto">
+        </a>
         
     </center>
-        <script>
-            function submitTeam()
-            {
-                location.replace("/Turnieje/TeamCreateManage/CreateTeam.jsp");
-            }
-            function submitTour()
-            {
-                location.replace("/Turnieje/TournamentCreateManage/CreateTournament.jsp");
-            }
-            function submitShowTour()
-            {
-                var iframe = document.getElementById("Tournaments");   //dobieram sie do iframe
-                var select = iframe.contentWindow.document.getElementById("choosedTournaments");   //dobieram sie do listy turnieji
-                var options = select.getElementsByTagName('option');    //pobieram opcje z listy
-                location.replace("/Turnieje/TournamentView.jsp?tournamentName="+options[select.selectedIndex].text);
-            }
-    </script>
     </body>
 </html>

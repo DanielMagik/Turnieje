@@ -13,12 +13,13 @@ import pl.polsl.aei.io.turnieje.model.datamodel.TournamentId;
  * Repository interface for tournaments.
  * 
  * @author Piotr Uhl
- * @version 1.0.0
  */
 public interface ITournamentRepository {
-    public boolean add(Tournament tournament);
-    public boolean delete(Tournament tournament);
-    public boolean delete(TournamentId tournament);
+    public TournamentId add(Tournament tournament);
+    //public boolean delete(Tournament tournament);
+    //public boolean delete(TournamentId tournament);
     public Set<Tournament> getAll();
+    public Tournament getById(TournamentId id);
+    public Tournament getByName(String name);
     public boolean update(Tournament tournament);
 }

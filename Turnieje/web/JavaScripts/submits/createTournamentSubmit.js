@@ -1,4 +1,4 @@
-function submit(myVar, admin)
+function submit(myVar)
 {
     //funkcja ta w GET wysyla JSONa zawierajacego nazwe turnieju, tablice jej druzyn czlonkowskich,
     //oraz wybrana dyscypline.
@@ -11,7 +11,7 @@ function submit(myVar, admin)
     var JSONToSend = "{\"name\":\"" + document.getElementById("tournamentName").value + "\",";
     
     //Administrator turnieju
-    JSONToSend = JSONToSend + "\"admin\":\"" + admin + "\",";
+    JSONToSend = JSONToSend + "\"admin\":\"" + document.getElementById("admin").value + "\",";
 
     //sekcja druzyn do dodania
     JSONToSend = JSONToSend + " \"teamsToAdd\": [";
@@ -19,18 +19,36 @@ function submit(myVar, admin)
     var iframe = document.getElementById("ChoosedTeams");   //dobieram sie do iframe
     var select = iframe.contentWindow.document.getElementById("choosedTeams");
     var options = select.getElementsByTagName('option');    //pobieram opcje z listy
+    var n = options.length;
+    if(n==0)
+    {
+        alert("Brak drużyn!");
+        return;
+    }
+    else
+    {
+        while(n%2 == 0)
+        {
+            n/=2;
+        }
+        if(n == 0 || n != 1)
+        {
+            alert("Liczba drużyn NIE jest potęgą dwójki");
+            return;
+        }
+    }
     var i;
     console.log(JSONToSend);
-    var JSONArrayOfUsersToAdd = "";
+    var JSONArrayOfTeamsToAdd = "";
     for (i = 0; i < options.length; i++)
     {
-        JSONArrayOfUsersToAdd = JSONArrayOfUsersToAdd + "\"" + options[i].text + "\", ";
+        JSONArrayOfTeamsToAdd = JSONArrayOfTeamsToAdd + "\"" + options[i].text + "\", ";
     }
     //usuwanie ostatniego ", " z druzyn do dodania
-    JSONArrayOfUsersToAdd = JSONArrayOfUsersToAdd.substring(0, JSONArrayOfUsersToAdd.length - 2);
-    console.log(JSONArrayOfUsersToAdd);
+    JSONArrayOfTeamsToAdd = JSONArrayOfTeamsToAdd.substring(0, JSONArrayOfTeamsToAdd.length - 2);
+    console.log(JSONArrayOfTeamsToAdd);
     //dodanie do JSONa znaku konca tablicy
-    JSONToSend = JSONToSend + JSONArrayOfUsersToAdd + "]";
+    JSONToSend = JSONToSend + JSONArrayOfTeamsToAdd + "]";
 
     //sekcja odpowiedzialna za dziedzine
     iframe = document.getElementById("AvaibleDisciplines");   //dobieram sie do iframe
@@ -72,5 +90,5 @@ function submit(myVar, admin)
     }
 
     console.log(JSONToSend);
-    location.replace("/Turnieje/"+myVar+"Tournament?JSONFromCreateTournament=" + JSONToSend);
+    location = "/Turnieje/"+myVar+"Tournament?JSONFromCreateTournament=" + JSONToSend;
 }

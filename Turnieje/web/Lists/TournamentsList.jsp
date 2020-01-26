@@ -1,25 +1,21 @@
 <%-- 
     Document   : TournamentsList
     Created on : 2020-01-12, 13:39:42
-    Author     : Daniel-PC
+    Author     : Daniel Kaleta
 --%>
-<%@page import="java.util.TreeSet"%>
 <%@page import="java.util.Set"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="http://localhost:8080/Turnieje/CSS/style.css" type="text/css"/>
         <title>Disciplines list</title>
     </head>
     <body>
 
         <%
-            Set<String> tournaments = new TreeSet<String>();
-            tournaments.add("Turniej 1");
-            tournaments.add("Turniej 2");
-            tournaments.add("Turniej 3");
-            tournaments.add("Turniej 4");
+            Set<String> tournaments = (Set<String>) session.getAttribute("tournamentsToShow");
         %>
         
         <script>var toFilter="Tournaments"</script>
@@ -30,11 +26,12 @@
                 <option selected>A-Z</option>
                 <option>Z-A</option>
             </select>
+            Ilość: <input type="text" id="amount" value="" style="width:20%;" readonly>
         </center>
                 
-        <select name="choosedTournaments" size="7" style="width:100%;" id="choosedTournaments">
+        <select name="choosedTournaments" size="6" style="width:100%;" id="choosedTournaments">
             <%for(String tournament: tournaments) {%>
-                <option><%= tournament%></option>
+                <option><%= tournament.toString()%></option>
             <%}%>
         </select>
 
@@ -44,6 +41,7 @@
             sort = document.getElementById("sorting");
             var toSort="Tournaments";
             sort.addEventListener("change", mySortingFunction.bind(this,toSort),false);  
+            window.onload = mySortingFunction(toSort);
         </script>
     </body>
 </html>

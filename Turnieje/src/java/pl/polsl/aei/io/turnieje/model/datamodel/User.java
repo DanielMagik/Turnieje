@@ -5,13 +5,13 @@
  */
 package pl.polsl.aei.io.turnieje.model.datamodel;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Representation of single user.
  * 
  * @author Piotr Uhl
- * @version 0.1.1
  */
 public class User {
     //<editor-fold defaultstate="collapsed" desc="Fields">
@@ -28,14 +28,14 @@ public class User {
      * Parameterless contructor, sets id to 0;
      */
     public User() {
-	this.id = new UserId(0);
+	this(0);
     }
     /**
      * Parameterized constructor, sets id to given one.
      * @param id - id of created object
      */
     public User(UserId id) {
-	this.id = id;
+	this(id.id);
     }
     /**
      * Parameterized constructor, sets id to given one.
@@ -43,6 +43,7 @@ public class User {
      */
     public User(int id) {
 	this.id = new UserId(id);
+	disciplines = new HashSet<>();
     }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Methods">
@@ -71,6 +72,9 @@ public class User {
     }
     public String getLastName() {
 	return this.lastName;
+    }
+    public String getPassHash() {
+	return this.passHash;
     }
     public boolean removeDiscipline(Discipline discipline) {
 	if (discipline == null) 

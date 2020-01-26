@@ -1,124 +1,148 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
-        <servlet-name>add</servlet-name>
-        <servlet-class>add</servlet-class>
+        <servlet-name>CreateTeamServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AACreateTeamServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>zaloguj</servlet-name>
-        <servlet-class>zaloguj</servlet-class>
+        <servlet-name>ManageTeamServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAManageTeamServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>zarejestruj</servlet-name>
-        <servlet-class>zarejestruj</servlet-class>
+        <servlet-name>CreateTournamentServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AACreateTournamentServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>zresetuj</servlet-name>
-        <servlet-class>zresetuj</servlet-class>
+        <servlet-name>ManageTournamentServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAManageTournamentServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>jestem_zalogowany</servlet-name>
-        <servlet-class>jestem_zalogowany</servlet-class>
+        <servlet-name>PrepareCreateTeamServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareCreateTeamServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>druzyny_w_ktorych_jestem</servlet-name>
-        <servlet-class>druzyny_w_ktorych_jestem</servlet-class>
+        <servlet-name>PrepareCreateTournamentServlet</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareCreateTournamentServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>turnieje_w_ktorych_jestem</servlet-name>
-        <servlet-class>turnieje_w_ktorych_jestem</servlet-class>
+        <servlet-name>PrepareManageTeam</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareManageTeam</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>wyslij_wiadomosc</servlet-name>
-        <servlet-class>wyslij_wiadomosc</servlet-class>
+        <servlet-name>PrepareManageTournament</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareManageTournament</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>podglad_turniejow</servlet-name>
-        <servlet-class>podglad_turniejow</servlet-class>
+        <servlet-name>PrepareTeamsList</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareTeamsList</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>edycja_konta</servlet-name>
-        <servlet-class>edycja_konta</servlet-class>
+        <servlet-name>PrepareTournamentsList</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareTournamentsList</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>usun_konto</servlet-name>
-        <servlet-class>usun_konto</servlet-class>
+        <servlet-name>PrepareMatchesList</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAPrepareMatchesListServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>druzyny_stworzone_przeze_mnie</servlet-name>
-        <servlet-class>druzyny_stworzone_przeze_mnie</servlet-class>
+        <servlet-name>EnterResult</servlet-name>
+        <servlet-class>Turnieje.Servlets.AAEnterResultServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>dodaj_druzyne</servlet-name>
-        <servlet-class>dodaj_druzyne</servlet-class>
+        <servlet-name>EditMyData</servlet-name>
+        <servlet-class>Turnieje.Servlets.EditMyData</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>turnieje_stworzone_przeze_mnie</servlet-name>
-        <servlet-class>turnieje_stworzone_przeze_mnie</servlet-class>
+        <servlet-name>FirstNameChange</servlet-name>
+        <servlet-class>Turnieje.Servlets.FirstNameChange</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>dodaj_turniej</servlet-name>
-        <servlet-class>dodaj_turniej</servlet-class>
+        <servlet-name>LastNameChange</servlet-name>
+        <servlet-class>Turnieje.Servlets.LastNameChange</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EmailChange</servlet-name>
+        <servlet-class>Turnieje.Servlets.EmailChange</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PasswordChange</servlet-name>
+        <servlet-class>Turnieje.Servlets.PasswordChange</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteMyAccount</servlet-name>
+        <servlet-class>Turnieje.Servlets.DeleteMyAccount</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>add</servlet-name>
-        <url-pattern>/add</url-pattern>
+        <servlet-name>CreateTeamServlet</servlet-name>
+        <url-pattern>/CreateTeam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>zaloguj</servlet-name>
-        <url-pattern>/zaloguj</url-pattern>
+        <servlet-name>ManageTeamServlet</servlet-name>
+        <url-pattern>/ManageTeam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>zarejestruj</servlet-name>
-        <url-pattern>/zarejestruj</url-pattern>
+        <servlet-name>CreateTournamentServlet</servlet-name>
+        <url-pattern>/CreateTournament</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>zresetuj</servlet-name>
-        <url-pattern>/zresetuj</url-pattern>
+        <servlet-name>ManageTournamentServlet</servlet-name>
+        <url-pattern>/ManageTournament</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>jestem_zalogowany</servlet-name>
-        <url-pattern>/jestem_zalogowany</url-pattern>
+        <servlet-name>PrepareCreateTeamServlet</servlet-name>
+        <url-pattern>/PrepareCreateTeamServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>druzyny_w_ktorych_jestem</servlet-name>
-        <url-pattern>/druzyny_w_ktorych_jestem</url-pattern>
+        <servlet-name>PrepareCreateTournamentServlet</servlet-name>
+        <url-pattern>/PrepareCreateTournamentServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>turnieje_w_ktorych_jestem</servlet-name>
-        <url-pattern>/turnieje_w_ktorych_jestem</url-pattern>
+        <servlet-name>PrepareManageTeam</servlet-name>
+        <url-pattern>/PrepareManageTeam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>wyslij_wiadomosc</servlet-name>
-        <url-pattern>/wyslij_wiadomosc</url-pattern>
+        <servlet-name>PrepareManageTournament</servlet-name>
+        <url-pattern>/PrepareManageTournament</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>podglad_turniejow</servlet-name>
-        <url-pattern>/podglad_turniejow</url-pattern>
+        <servlet-name>PrepareTeamsList</servlet-name>
+        <url-pattern>/PrepareTeamsList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>edycja_konta</servlet-name>
-        <url-pattern>/edycja_konta</url-pattern>
+        <servlet-name>PrepareTournamentsList</servlet-name>
+        <url-pattern>/PrepareTournamentsList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>usun_konto</servlet-name>
-        <url-pattern>/usun_konto</url-pattern>
+        <servlet-name>PrepareMatchesList</servlet-name>
+        <url-pattern>/PrepareMatchesList</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>druzyny_stworzone_przeze_mnie</servlet-name>
-        <url-pattern>/druzyny_stworzone_przeze_mnie</url-pattern>
+        <servlet-name>EnterResult</servlet-name>
+        <url-pattern>/EnterResult</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>dodaj_druzyne</servlet-name>
-        <url-pattern>/dodaj_druzyne</url-pattern>
+        <servlet-name>EditMyData</servlet-name>
+        <url-pattern>/EditMyData</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>turnieje_stworzone_przeze_mnie</servlet-name>
-        <url-pattern>/turnieje_stworzone_przeze_mnie</url-pattern>
+        <servlet-name>FirstNameChange</servlet-name>
+        <url-pattern>/FirstNameChange</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>dodaj_turniej</servlet-name>
-        <url-pattern>/dodaj_turniej</url-pattern>
+        <servlet-name>LastNameChange</servlet-name>
+        <url-pattern>/LastNameChange</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmailChange</servlet-name>
+        <url-pattern>/EmailChange</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PasswordChange</servlet-name>
+        <url-pattern>/PasswordChange</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteMyAccount</servlet-name>
+        <url-pattern>/DeleteMyAccount</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

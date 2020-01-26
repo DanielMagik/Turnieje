@@ -1,3 +1,5 @@
+//Funkcja odpowiedzialna za przenoszenie pozycji z 
+//listy "wybrane" do listy "do wyboru"
 function deleteFunction(toDelete)
 {
     var iframe = document.getElementById("Choosed"+toDelete);   //dobieram sie do iframe
@@ -11,4 +13,5 @@ function deleteFunction(toDelete)
     select2.add(option);
 
     select.remove(select.selectedIndex);
+    myCountingFunction(toDelete);
 }

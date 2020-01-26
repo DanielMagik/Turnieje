@@ -9,8 +9,9 @@ package pl.polsl.aei.io.turnieje.model.datamodel;
  * Tournament mode enumeration
  * 
  * @author Piotr Uhl
- * @version 0.1.0
  */
 public enum TournamentMode {
-    
+    NONE,
+    Tryb_1,
+    Tryb_2
 }

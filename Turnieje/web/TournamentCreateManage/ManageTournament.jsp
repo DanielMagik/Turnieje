@@ -1,51 +1,43 @@
-<%@page import="org.json.JSONArray"%>
-<%@page import="org.json.JSONObject"%>
-<%@ page import="java.sql.*" %>
-<%ResultSet resultset =null;%>
-<!DOCTYPE html> <html>
+<%-- 
+    Document   : ManageTournament
+    Author     : Daniel Kaleta
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html> 
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://localhost:8080/Turnieje/CSS/style.css" type="text/css"/>
         <title>Edytuj turniej</title>
     </head>
 
     <script>var toInit="Teams"</script>
-    <body onload="init(toInit);setFieldsAndLists();">
+    <body onload="init(toInit);setFieldsAndLists();myCountingFunction(toInit)">
         
     <%
         //Sprawdzanie, czy uzytkownik jest zalogowany
-        String user = null;
-        if(session.getAttribute("loginUser") == null)
+        String userEmail = (String) session.getAttribute("loggedUser");
+        if(userEmail == null)
         {
             response.sendRedirect("http://localhost:8080/Turnieje/Login.jsp");
             return;
         }
-        else 
-        {
-            user = (String) session.getAttribute("loginUser");
-        }
-        
-        //Pobieram z ciasteczka JSONa w ktÛrym mam wszelkie informacje na temat turnieju
-        //Uzyje go do wyswietlania poprawnych informacji na stronie edycji
-        String JSONString=null;
-        JSONObject JSON=null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("aboutTournament")) {
-                    JSONString = cookie.getValue();
-                    JSON = new JSONObject(JSONString);
-                    break;
-                }
-            }
-        }
+
+        String toEditName = request.getParameter("tournamentName");
+        Integer toEditTeamSize = (Integer) session.getAttribute("tournamentToEditTeamSize");
     %>
 
     <center>
         
-    <h1>Edytujesz turniej: <%= request.getParameter("tournamentName") %> </h1>
+    <h1>Edytujesz turniej: <%= toEditName %> </h1>
     
-        Nazwa turnieju : <input type = "text" name = "tournamentName" id="tournamentName" value="<%= request.getParameter("tournamentName") %>">
+        Nazwa turnieju : <input type = "text" name = "tournamentName" id="tournamentName" value="<%= toEditName %>">
+        
+        <br/><br/>
+        
+        <!-- Administrator -->
+        Administrator: <input type = "text" name = "admin" id="admin" value="<%= userEmail %>">
         
         <br/><br/>
         
@@ -66,11 +58,11 @@
             
             <br/><br/>
             
-            Rozmiar druzyn: <input type="number" id="teamSize" name="teamSize" value="<%= JSON.getString("teamSize") %>" min="1">
+            Rozmiar dru≈ºyn: <input type="number" id="teamSize" name="teamSize" value="<%= toEditTeamSize %>" min="1">
             
             <br/><br/>
             
-            Druzyny 
+            Dru≈ºyny 
             <br/>
             Do dodania: 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -78,15 +70,25 @@
             
             <br/><br/>
 
-        <iframe id="AvaibleTeams" src="/Turnieje/Lists/TeamsList.jsp" width="300" height="150"></iframe>
-        <iframe id="ChoosedTeams" src="/Turnieje/Lists/TeamsList.jsp?Empty=true" width="300" height="150"></iframe>
-
+            <div id="container">
+                <div id="avaible">
+                    Dostƒôpne: 
+                    <br/>
+                    <iframe id="AvaibleTeams" src="/Turnieje/Lists/TeamsList.jsp" width="300" height="150"></iframe>
+                </div>
+                <div id="added">
+                    Dodane:
+                    <br/>
+                    <iframe id="ChoosedTeams" src="/Turnieje/Lists/TeamsList.jsp?inTournament=true" width="300" height="150"></iframe>
+                </div>
+            </div>
+            
         <br/><br/>
         
         <input type = "submit" value = "Zatwierdz" onclick="temp()">
         
         <!--
-        PowrÛt do menu g?Ûwnego
+        Powr√≥t do menu glownego
         -->
         <form action = "http://localhost:8080/Turnieje//MainMenu.jsp" method="get">
             <input type = "submit" value = "Powrot">
@@ -100,8 +102,7 @@
             function temp()
             {
                 var myVar="Manage";
-                var admin = <%=user%>
-                submit(myVar,admin);
+                submit(myVar);
             }
             //Funkcja do ustawienia nazwy, dyscypliny, trybu rozgrywek, rozmiaru druzyn, oraz druzyn w turnieju
             function setFieldsAndLists()
@@ -111,7 +112,7 @@
                 var select = iframe.contentWindow.document.getElementById("choosedDisciplines");   //dobieram sie do listy druzyn
                 var options = select.getElementsByTagName('option');
                 
-                var actualDiscipline = "<%= JSON.getString("discipline") %>";
+                var actualDiscipline = "<%= (String) session.getAttribute("tournamentToEditDiscipline") %>";
                 
                 for ( var i = 0; i < select.length; i++ ) 
                 {
@@ -125,52 +126,14 @@
                 options = tournamentMode.getElementsByTagName('option');
                 for (var i = 0; i < tournamentMode.length; i++) 
                 {
-                    if(options[i].value == "<%= JSON.getString("type") %>")
-                    {
-                        tournamentMode.selectedIndex = i;
-                    }
+                    tournamentMode.selectedIndex = 0;
                 }
-                
-                //Ustawianie druzyn, ktore sa juz dodane
-                iframe = document.getElementById("ChoosedTeams");   //dobieram sie do iframe
-                select = iframe.contentWindow.document.getElementById("choosedTeams");   //dobieram sie do listy druzyn
-                
-                <% 
-                    JSONArray teams = JSON.getJSONArray("teamsToAdd");
-                    for (int i = 0; i < teams.length(); i++) 
-                    {
-                        %>
-                            var option = document.createElement("option");
-                            option.text = "<%= teams.getString(i)%>";
-                            select.add(option);
-                        <%
-                    }
-                %>
-                 
-                //Usuniecie dodanych druzyn z listy dostepnych
-                iframe = document.getElementById("AvaibleTeams");   //dobieram sie do iframe
-                select = iframe.contentWindow.document.getElementById("choosedTeams");   //dobieram sie do listy druzyn
-                options = select.getElementsByTagName('option');
-                
-                <% 
-                    for (int i = 0; i < teams.length(); i++) 
-                    {
-                        %>
-                            for (var i = 0; i < select.length; i++) 
-                            {
-                                if(options[i].value == "<%= teams.getString(i)%>")
-                                {
-                                    select.remove(i);
-                                }
-                            }
-                        <%
-                    }
-                %>
             }
         </script>
     <script src="/Turnieje/JavaScripts/forLists/initFunction.js"></script>
     <script src="/Turnieje/JavaScripts/forLists/addFunction.js"></script>
     <script src="/Turnieje/JavaScripts/forLists/deleteFunction.js"></script>
+    <script src="/Turnieje/JavaScripts/forLists/optionsCounter.js"></script>
     <script src="/Turnieje/JavaScripts/submits/createTournamentSubmit.js"></script>
     </body>
 </html>

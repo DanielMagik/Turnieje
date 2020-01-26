@@ -1,29 +1,31 @@
-<!DOCTYPE html> <html>
+<%-- 
+    Document   : CreateTeam
+    Author     : Daniel Kaleta
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html> 
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Stworz druzyne</title>
-
+        <link rel="stylesheet" href="http://localhost:8080/Turnieje/CSS/style.css" type="text/css"/>
+        <title>Stw贸rz dru偶yn臋</title>
     </head>
     <!-- 2 inity, 1 dla list uzytkownikow, 2 dla list dyscyplin-->
     <script>var toInit = "Users", toInit2 = "Disciplines";</script>
-    <body onload="init(toInit);init(toInit2);">
+    <body onload="init(toInit);init(toInit2);myCountingFunction(toInit);myCountingFunction(toInit2)">
     <%
-        String user = null;
-        if(session.getAttribute("loginUser") == null)
+        //Sprawdzanie, czy uzytkownik jest zalogowany
+        String userEmail = (String) session.getAttribute("loggedUser");
+        if(userEmail == null)
         {
             response.sendRedirect("http://localhost:8080/Turnieje/Login.jsp");
             return;
         }
-        else 
-        {
-            user = (String) session.getAttribute("loginUser");
-        } 
-
     %>
     <center>
 
-        <h1>Tworzenie druzyny</h1>
+        <h1>Tworzenie dru偶yny</h1>
 
         <!--form w akutalej wersji nie za bardzo uzyteczny 
         <form action="ManageTeam" method="get" id="myForm"> -->
@@ -32,55 +34,64 @@
             Nazwa druzyny : <input type = "text" name = "teamName" id="teamName">
 
             <br/><br/>
-            
-            Kapitan: <%=user%>
+        
+            <!-- Kapitan -->
+            Kapitan (email): <input type = "text" name = "captain" id="captain" value="<%= userEmail %>" readonly>
             
              <br/><br/>
 
-            <!-- Dodawanie zawodnik體 po mailu, ewentualnie do implementacji
+            <!-- Dodawanie zawodnik贸w po mailu, ewentualnie do implementacji
             Dodaj zawodnika (nazwa) : <input type = "text" name = "userToAdd" id="userToAdd">
 
             <br/><br/>-->
             
-            <!-- Dodawanie zawodnik體 -->
+            <!-- Dodawanie zawodnik贸w -->
 
-            Dodaj zawodnika (wybierz z listy) :
-
-            <br/>
-
-            Dostepni: 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            Dodani:
-
+            Dodaj zawodnik贸w (wybierz z listy) :
+            
             <br/><br/>
 
-            <iframe id="AvaibleUsers" src="/Turnieje/Lists/UsersList.jsp"></iframe>
-            <iframe id="ChoosedUsers" src="/Turnieje/Lists/UsersList.jsp?Empty=true"></iframe>
+            <div id="container">
+                <div id="avaible">
+                    Dost臋pni: 
+                    <br/>
+                    <iframe id="AvaibleUsers" src="/Turnieje/Lists/UsersList.jsp"></iframe>
+                </div>
+                <div id="added">
+                    Dodani:
+                    <br/>
+                    <iframe id="ChoosedUsers" src="/Turnieje/Lists/UsersList.jsp?inTeam=true"></iframe>
+                </div>
+            </div>
 
             <br/><br/>
 
             Dodaj dyscypliny (wybierz z listy) :
 
-            <br/>
-
-            Dostepne: 
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-            Dodane:
-
             <br/><br/>
 
-            <iframe id="AvaibleDisciplines" src="/Turnieje/Lists/DisciplinesList.jsp"></iframe>
-            <iframe id="ChoosedDisciplines" src="/Turnieje/Lists/DisciplinesList.jsp?Empty=true"></iframe>
+            <div id="container">
+                <div id="avaible">
+                    Dost臋pne: 
+                    <br/>
+                    <iframe id="AvaibleDisciplines" src="/Turnieje/Lists/DisciplinesList.jsp"></iframe>
+                </div>
+                <div id="added">
+                    Dodane:
+                    <br/>
+                    <iframe id="ChoosedDisciplines" src="/Turnieje/Lists/DisciplinesList.jsp?added=true"></iframe>
+                </div>
+            </div>
 
             <br/><br/>
             
-            <input type = "submit" value = "Zatwierdz" onclick="temp()">
+            <input type = "submit" value = "Zatwierd藕" onclick="temp()">
             
         <!--
-        Powr髏 do menu g?體nego
+        Powr贸t do menu g?贸wnego
         -->
         <form action = "http://localhost:8080/Turnieje//MainMenu.jsp" method="get">
-            <input type = "submit" value = "Powrot">
+            <input type = "submit" value = "Powr贸t">
         </form>
             
         <!--</form>-->
@@ -90,13 +101,13 @@
         function temp()
         {
             var myVar="Create";
-            var captain = "<%= user%>";
-            submit(myVar, captain);
+            submit(myVar);
         }
     </script>
     <script src="/Turnieje/JavaScripts/forLists/initFunction.js"></script>
     <script src="/Turnieje/JavaScripts/forLists/addFunction.js"></script>
     <script src="/Turnieje/JavaScripts/forLists/deleteFunction.js"></script>
+    <script src="/Turnieje/JavaScripts/forLists/optionsCounter.js"></script>
     <script src="/Turnieje/JavaScripts/submits/createTeamSubmit.js"></script>
     
     </body>

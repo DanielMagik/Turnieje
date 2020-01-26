@@ -1,42 +1,47 @@
 <%-- 
-    Document   : DisciplinesList
+    Document   : TeamsList
     Created on : 2020-01-09, 18:28:06
     Author     : Daniel Kaleta
 --%>
-<%@page import="java.util.TreeSet"%>
 <%@page import="java.util.Set"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="http://localhost:8080/Turnieje/CSS/style.css" type="text/css"/>
         <title>Teams list</title>
     </head>
+    <script>var toFilter="Teams"</script>
     <body>
 
         <%
-            Set<String> teams = new TreeSet<String>();
-            for(int i =0; i<1000;i++)
-            {
-            teams.add("Team "+i);
-            }
-            boolean emptyList = Boolean.parseBoolean(request.getParameter("Empty"));
+            Set<String> allTeams = (Set<String>) session.getAttribute("allTeams");
+            Set<String> teamsInTournament = (Set<String>) session.getAttribute("teamsInTournament");
+            
+            boolean inTournament = Boolean.parseBoolean(request.getParameter("inTournament"));
         %>
         
-        <script>var toFilter="Teams"</script>
-        Nazwa: <input type = "text" name = "searchTeams" id="searchTeams" onkeyup="myFilterFunction(toFilter)">
-        
+
         <center>
+            <label for="searchTeams">Nazwa:</label>
+            <input type = "text" name = "searchTeams" id="searchTeams" onkeyup="myFilterFunction(toFilter)">
+        
             <select name="sorting" size="1" style="width:40%;" id="sorting">
                 <option selected>A-Z</option>
                 <option>Z-A</option>
             </select>
+            Ilość: <input type="text" id="amount" value="" style="width:20%;" readonly>
         </center>
                 
-        <select name="choosedTeams" size="7" style="width:100%;" id="choosedTeams">
-            <% if(emptyList!=true){
-                for(String team: teams) {%>
-                <option><%= team%></option>
+        <select name="choosedTeams" size="6" style="width:100%;" id="choosedTeams">
+            <% if(inTournament!=true){
+                for(String teamName: allTeams) {%>
+                <option><%= teamName %></option>
+            <%}}
+            else{
+                for(String teamName: teamsInTournament) {%>
+                <option><%= teamName %></option>
             <%}}%>
         </select>
 
@@ -44,8 +49,9 @@
         <script src="/Turnieje/JavaScripts/forLists/sortingFunction.js"></script>
         <script>
             sort = document.getElementById("sorting");
-            var toSort="Teams";
-            sort.addEventListener("change", mySortingFunction.bind(this,toSort),false);  
+            var toSort ="Teams";
+            sort.addEventListener("change", mySortingFunction.bind(this,toSort),false);
+            window.onload = mySortingFunction(toSort);
         </script>
     </body>
 </html>

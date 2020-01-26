@@ -6,13 +6,13 @@
 package pl.polsl.aei.io.turnieje.model.datamodel;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Representation of single tournament.
  * 
  * @author Piotr Uhl
- * @version 0.1.1
  */
 public class Tournament {
     //<editor-fold defaultstate="collapsed" desc="Fields">
@@ -21,7 +21,6 @@ public class Tournament {
     Discipline discipline;
     Date endingDate;
     boolean finished;
-    Set<MatchId> matches;
     String name;
     Date startingDate;
     Set<TeamInTournament> teams;
@@ -33,14 +32,14 @@ public class Tournament {
      * Parameterless contructor, sets id to 0;
      */
     public Tournament() {
-	this.id = new TournamentId(0);
+	this(0);
     }
     /**
      * Parameterized constructor, sets id to given one.
      * @param id - id of created object
      */
     public Tournament(TournamentId id) {
-	this.id = id;
+	this(id.id);
     }
     /**
      * Parameterized constructor, sets id to given one.
@@ -48,14 +47,10 @@ public class Tournament {
      */
     public Tournament(int id) {
 	this.id = new TournamentId(id);
+	teams = new HashSet<>();
     }
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Methods">
-    public boolean addMatch(MatchId match) {
-	if (match == null)
-	    return false;
-	return this.matches.add(match);
-    }
     public boolean addTeam(TeamInTournament team) {
 	if (team == null)
 	    return false;
@@ -81,9 +76,6 @@ public class Tournament {
     public TournamentId getId() {
 	return this.id;
     }
-    public Set<MatchId> getMatches() {
-	return this.matches;
-    }
     public TournamentMode getMode() {
 	return this.mode;
     }
@@ -98,16 +90,6 @@ public class Tournament {
     }
     public int getTeamSize() {
 	return this.teamSize;
-    }
-    public boolean removeMatch(Match match) {
-	if (match == null)
-	    return false;
-	return this.matches.remove(match.id);
-    }
-    public boolean removeMatch(MatchId match) {
-	if (match == null)
-	    return false;
-	return this.matches.remove(match);
     }
     public boolean removeTeam(Team team) {
 	if (team == null)

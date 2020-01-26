@@ -3,24 +3,34 @@
     Created on : 2020-01-09, 20:21:53
     Author     : Daniel Kaleta
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Druzyna zedytowana</title>
+        <link rel="stylesheet" href="http://localhost:8080/Turnieje/CSS/style.css" type="text/css"/>
+        <title>Drużyna zedytowana</title>
     </head>
+    <%
+        //Sprawdzanie, czy uzytkownik jest zalogowany
+        String userEmail = (String) session.getAttribute("loggedUser");
+        if(userEmail == null)
+        {
+            response.sendRedirect("http://localhost:8080/Turnieje/Login.jsp");
+            return;
+        }
+        String editedTeam = request.getParameter("teamName");
+    %>
     
     <body> 
-    <center>
-        <h1> Pomyślna zmiana nazwy druzyny na: <%= request.getParameter("teamName") %></h1>
-    </center>   
-    
+        <center>
+            <h1> Pomyślna edycja drużyny <%= editedTeam %></h1>
+        </center>   
+
         <script>
         setTimeout(function() 
         {
-            location.replace("/Turnieje/TeamCreateManage/ManageTeam.jsp?teamName="+"<%= request.getParameter("teamName") %>"+"")
+            location = "/Turnieje/PrepareManageTeam?teamName=<%= editedTeam %>"
         }, 2000);
         </script>
     </body>
